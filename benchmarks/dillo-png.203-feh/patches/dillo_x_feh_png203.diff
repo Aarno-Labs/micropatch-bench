@@ -1,0 +1,2 @@
+460a461
+> if (!((unsigned int) ((unsigned long long) png_ptr->height * (unsigned long long) png_ptr->width >> 32) <= 0 && (((unsigned long long) png_ptr->height * (unsigned long long) png_ptr->width)) <= 536870911)) {exit(-1);}

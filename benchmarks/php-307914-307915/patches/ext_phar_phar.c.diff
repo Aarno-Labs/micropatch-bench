@@ -1,0 +1,17 @@
+--- php-src/ext/phar/phar.c	2014-12-22 00:55:10.000000000 -0500
++++ php-fix-09273098521913aext_phar_phar.c	2020-07-31 11:56:50.936496635 -0400
+@@ -1,3 +1,4 @@
++#include <string.h>
+ /*
+   +----------------------------------------------------------------------+
+   | phar php single-file executable PHP extension                        |
+@@ -1265,7 +1266,8 @@
+ 			if (ext_len == -2) {
+ 				spprintf(error, 0, "Cannot create a phar archive from a URL like \"%s\". Phar objects can only be created from local files", fname);
+ 			} else {
+-				spprintf(error, 0, "Cannot create phar '%s', file extension (or combination) not recognised", fname);
++				//prophet generated patch
++				spprintf(error, 0, ("Cannot create phar '%s', file extension (or combination) not recognised or the directory does not exist"), fname);
+ 			}
+ 		}
+ 		return FAILURE;

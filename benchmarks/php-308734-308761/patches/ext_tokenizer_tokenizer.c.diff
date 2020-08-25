@@ -1,0 +1,14 @@
+--- php-src/ext/tokenizer/tokenizer.c	2014-12-23 02:01:46.000000000 -0500
++++ php-fix-1d984a7ext_tokenizer_tokenizer.c	2020-07-30 12:38:03.734580239 -0400
+@@ -150,7 +150,10 @@
+ 		}
+ 		ZVAL_NULL(&token);
+ 
+-		token_line = CG(zend_lineno);
++		//prophet generated patch
++		if ((token_type == 355))
++		    return;
++		token_line = (compiler_globals.zend_lineno);
+ 	}
+ }
+ 

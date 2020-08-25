@@ -1,0 +1,15 @@
+--- examples/jpegdec.c	2020-07-29 15:31:26.783831181 -0400
++++ examples/jpegdec.cwebp_x_feh.c	2020-07-29 15:31:48.872221119 -0400
+@@ -1,3 +1,4 @@
++#include <stdint.h>
+ // Copyright 2012 Google Inc. All Rights Reserved.
+ //
+ // Use of this source code is governed by a BSD-style license
+@@ -245,6 +246,7 @@
+   height = dinfo.output_height;
+   stride = dinfo.output_width * dinfo.output_components * sizeof(*rgb);
+ 
++  if (!(((uint64_t) height * (uint64_t) dinfo.output_width) <= 536870911)) {exit(-1);}
+   rgb = (uint8_t*)malloc(stride * height);
+   if (rgb == NULL) {
+     goto End;

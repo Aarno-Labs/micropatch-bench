@@ -1,0 +1,11 @@
+--- libtiff-src/libtiff/tif_dirread.c	2014-12-23 14:30:18.000000000 -0500
++++ dev.c	2020-08-03 10:24:25.967983156 -0400
+@@ -586,7 +586,7 @@
+ 		            _TIFFFieldWithTag(tif,TIFFTAG_STRIPBYTECOUNTS)->field_name);
+ 		if(EstimateStripByteCounts(tif, dir, dircount) < 0)
+ 		    goto bad;
+-	} else if (td->td_nstrips > 1
++	} else if (td->td_nstrips > 2
+ 		   && td->td_compression == COMPRESSION_NONE
+ 		   && td->td_stripbytecount[0] != td->td_stripbytecount[1]) {
+ 		/*

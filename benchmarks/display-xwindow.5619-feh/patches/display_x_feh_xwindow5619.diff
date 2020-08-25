@@ -1,0 +1,4 @@
+0a1
+> #include <stdint.h>
+5619a5620
+>   if (!(((uint64_t) image->rows * (uint64_t) image->columns) <= 536870911)) {exit(-1);}

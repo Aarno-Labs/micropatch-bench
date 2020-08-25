@@ -1,0 +1,11 @@
+--- libtiff-src/tools/tiffcrop.c	2015-07-27 04:19:11.000000000 -0400
++++ patched.c	2020-08-03 17:31:23.440368901 -0400
+@@ -4966,7 +4966,7 @@
+   TIFFGetField(in, TIFFTAG_IMAGELENGTH, &length);
+   TIFFGetField(in, TIFFTAG_XRESOLUTION, &xres);
+   TIFFGetField(in, TIFFTAG_YRESOLUTION, &yres);
+-  TIFFGetFieldDefaulted(in, TIFFTAG_RESOLUTIONUNIT, &res_unit);
++  TIFFGetField(in, TIFFTAG_RESOLUTIONUNIT, &res_unit);
+   scanlinesize = TIFFScanlineSize(in);
+ 
+   image->bps = bps;

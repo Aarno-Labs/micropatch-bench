@@ -1,0 +1,10 @@
+0a1
+> #include <string.h>
+2858c2859,2860
+< 		dateobj->time->relative.y = intobj->diff->y * bias;
+---
+> 		//prophet generated patch
+> 		memset(&dateobj->time->relative,0,sizeof(*(&dateobj->time->relative)));dateobj->time->relative.y= intobj->diff->y*bias;
+2904a2907,2908
+> 	//prophet generated patch
+> 	memset(&dateobj->time->relative, 0, sizeof (*(&dateobj->time->relative)));

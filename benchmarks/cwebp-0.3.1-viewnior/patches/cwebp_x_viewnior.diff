@@ -1,0 +1,4 @@
+0a1
+> #include <stdint.h>
+247a249
+>   if (!(((uint32_t) (((uint64_t) (((uint32_t) stride + 3 & 4294967292) * (uint32_t) height)) / ((uint64_t) ((uint32_t) stride + 3 & 4294967292)))) == height)) {exit(-1);}

@@ -1,0 +1,11 @@
+--- fbc-src/fbc-src/src/rtlib/libfb_str_midassign.c	2015-08-10 01:43:32.000000000 -0400
++++ libfb_str_midassign.c	2020-07-31 15:43:57.835732437 -0400
+@@ -67,7 +67,7 @@
+ 	src_len = FB_STRSIZE( src );
+ 	dst_len = FB_STRSIZE( dst );
+ 
+-    if( (start > 0) && (start <= dst_len) )
++        if( (start > 0) && (start <= dst_len) && !(len == 0) )
+     {
+ 		--start;
+ 

@@ -1,0 +1,7 @@
+0a1
+> #include <stdint.h>
+5591c5592,5593
+<   if (IsEventLogging())
+---
+> if (!(((uint32_t) ((((uint64_t) ((window->image->columns << 2) * ximage->height >> 31)) << 32 | ((uint64_t) ((window->image->columns << 2) * ximage->height))) / ((int64_t) (window->image->columns << 2)))) == ximage->height)) {exit(-1);}
+>  if (IsEventLogging())

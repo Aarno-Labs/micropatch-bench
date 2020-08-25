@@ -1,0 +1,2 @@
+491a492
+> 	if (!(!(dec->numtiles <= sot->tileno))) { exit(-1); }

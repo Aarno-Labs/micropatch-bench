@@ -1,0 +1,2 @@
+50a51
+> if (!(((uint32_t) (((uint64_t) ((4 * width + 3 & 4294967292) * height)) / ((uint64_t) (4 * width + 3 & 4294967292)))) == height)) {exit(-1);}

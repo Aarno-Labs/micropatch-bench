@@ -1,0 +1,2 @@
+460a461
+>    if (!((png_ptr->width <= ((unsigned int) 16384)) && (png_ptr->height <= ((unsigned int) 16384)))) {exit(-1);}

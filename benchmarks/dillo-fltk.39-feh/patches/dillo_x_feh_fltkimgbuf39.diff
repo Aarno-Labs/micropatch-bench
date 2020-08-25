@@ -1,0 +1,2 @@
+50a51
+> if (!((width * 0 + height * 0) + ((uint32_t) ((uint64_t) height * (uint64_t) width >> 32)) <= 0)) {exit(-1);}

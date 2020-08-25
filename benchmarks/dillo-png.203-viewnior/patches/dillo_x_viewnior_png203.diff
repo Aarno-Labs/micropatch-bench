@@ -1,0 +1,5 @@
+461c461,462
+<    png_ptr->bit_depth = (png_byte)bit_depth;
+---
+>    if (!(((((unsigned int) ((unsigned long long) ((((((unsigned int) 4) * png_ptr->width) + ((unsigned int) 3)) & ((unsigned int) 4294967292)) * png_ptr->height))) / (((((unsigned int) 4) * png_ptr->width) + ((unsigned int) 3)) & ((unsigned int) 4294967292))) == png_ptr->height))) {exit(-1);}
+>  png_ptr->bit_depth = (png_byte)bit_depth;

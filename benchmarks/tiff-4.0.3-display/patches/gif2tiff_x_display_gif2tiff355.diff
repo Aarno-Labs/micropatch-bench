@@ -1,0 +1,2 @@
+336a337
+> if (!(((unsigned char) (((unsigned int) datasize) <= ((unsigned int) 12))))) {exit(-1);}    

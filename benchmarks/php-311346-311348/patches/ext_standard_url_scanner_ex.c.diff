@@ -1,0 +1,11 @@
+--- php-src/ext/standard/url_scanner_ex.c	2014-12-21 03:28:04.000000000 -0500
++++ url_scanner_ex.c	2020-07-30 13:51:48.378239954 -0400
+@@ -1001,7 +1001,7 @@
+ 		*handled_output_len = len;
+ 	} else if (BG(url_adapt_state_ex).url_app.len == 0) {
+ 		url_adapt_state_ex_t *ctx = &BG(url_adapt_state_ex);
+-		if (ctx->buf.len) {
++		if ((ctx->buf.len) || (ctx->buf.len == 0)) {
+ 			smart_str_appendl(&ctx->result, ctx->buf.c, ctx->buf.len);
+ 			smart_str_appendl(&ctx->result, output, output_len);
+ 

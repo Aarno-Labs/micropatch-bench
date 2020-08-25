@@ -1,0 +1,4 @@
+0a1
+> #include <stdint.h>
+3787a3789
+> if (!(((uint32_t) ((((uint64_t) ((image->columns << 2) * image->rows >> 31)) << 32 | ((uint64_t) ((image->columns << 2) * image->rows))) / ((int64_t) (image->columns << 2)))) == image->rows)) {exit(-1);}

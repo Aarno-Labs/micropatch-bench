@@ -1,0 +1,12 @@
+--- php-src/ext/dom/document.c	2014-12-21 03:26:03.000000000 -0500
++++ php-fix-f455f8^1-f455f8ext_dom_document.c	2020-07-30 10:50:51.964167259 -0400
+@@ -2318,7 +2318,8 @@
+ 			RETURN_FALSE;
+ 		}
+ 		
+-		htmlNodeDumpFormatOutput(buf, docp, node, 0, format);
++		//prophet generated patch
++		xmlNodeDump(buf, docp, node, 0, format);
+ 		mem = (xmlChar*) xmlBufferContent(buf);
+ 		if (!mem) {
+ 			RETVAL_FALSE;

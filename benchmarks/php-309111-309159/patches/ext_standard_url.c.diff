@@ -1,0 +1,13 @@
+--- php-src/ext/standard/url.c	2015-07-27 04:39:35.000000000 -0400
++++ patched.c	2020-08-03 17:21:57.635747314 -0400
+@@ -316,6 +316,10 @@
+ 		pp = strchr(s, '#');
+ 
+ 		if (pp && pp < p) {
++			if (pp - s) {
++				ret->path = estrndup(s, (pp-s));
++				php_replace_controlchars_ex(ret->path, (pp - s));
++			}
+ 			p = pp;
+ 			goto label_parse;
+ 		}

@@ -1,0 +1,4 @@
+0a1
+> #include <stdint.h>
+245a247
+> if (!((uint32_t) ((int32_t) dinfo.output_width <= 16384))) {exit(-1);}
