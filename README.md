@@ -39,3 +39,9 @@ We are in the progress of classifying each patched vulnerability and
 the properties of the patch relating to the original program, i.e.,
 modifies dataflow or control flow, exits program, etc.  We will make
 this available soon.
+
+## Delete Docker Images
+
+```
+for i in $(ls benchmarks); do docker rmi $i-base; docker rmi $i-patched; done;
+```
