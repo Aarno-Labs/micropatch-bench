@@ -1,12 +1,14 @@
 # MRAM Patch Benchmarks
 
+**This repo requires (git LFS)[https://git-lfs.github.com/], please install and enable before you clone.**
+
 This repository contains real-world patch examples from popular
 open-source programs.  The patches focus on security vulnerabilities
 such as buffer overflows, integer overflows, command injection, etc.
 
 ## Benchmark Artifacts
 
-The benchmarks are located in the [./benchmarks](benchmarks)
+The benchmarks are located in the (benchmarks)[./benchmarks]
 directory.  Each benchmark includes a Dockerfile that will build the
 binaries of the benchmark on any system that supports Docker.  Inside
 of each benchmark directory is a compressed tarball of the source and
