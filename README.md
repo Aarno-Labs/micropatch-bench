@@ -40,10 +40,10 @@ and must be run from the root directory of this repo.
 
 ## Benchmark Patch Details
 
-We are in the progress of classifying each patched vulnerability and
-the properties of the patch relating to the original program, i.e.,
-modifies dataflow or control flow, exits program, etc.  We will make
-this available soon.
+We are in the process creating a document that presents a
+classification for each patched vulnerability and the properties of
+the patch relating to the original program, i.e., modifies dataflow or
+control flow, exits program, etc.  We will make this available soon.
 
 ## Delete Docker Images
 
