@@ -6,6 +6,11 @@ This repository contains real-world patch examples from popular
 open-source programs.  The patches focus on security vulnerabilities
 such as buffer overflows, integer overflows, command injection, etc.
 
+## Requirements
+
+* Linux host (tested with Ubuntu 20.04)
+* Docker (tested with version 19.03.8)
+
 ## Benchmark Artifacts
 
 The benchmarks are located in the [benchmarks](./benchmarks)
