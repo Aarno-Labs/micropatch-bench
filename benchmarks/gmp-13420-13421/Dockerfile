@@ -27,7 +27,7 @@ RUN mkdir -p /gmp-bin && ./configure --prefix=/gmp-bin
 RUN make -j $nproc
 RUN make install
 
-CMD (mkdir -p /build/gmp-bin) && cp -R /gmp-bin/* /build/gmp-bin/
+CMD (mkdir -p /build/original) && cp -R /gmp-bin/* /build/original
 
 # Patched build
 FROM gmp-13420-13421 as gmp-13420-13421-patched
@@ -38,6 +38,4 @@ RUN patch /gmp-src/mpn/generic/powm.c /mpn_generic_powm.c.diff
 RUN make -j $nproc
 RUN make install
 
-CMD (mkdir -p /build/gmp-bin-patched ) && cp -R /gmp-bin/* /build/gmp-bin-patched/
-
-
+CMD (mkdir -p /build/patched ) && cp -R /gmp-bin/* /build/patched/

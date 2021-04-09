@@ -63,7 +63,7 @@ ARG nproc=1
 RUN make -j $nproc
 RUN make install
 
-CMD (mkdir -p /build/original/) && cp /usr/local/lib/libMagickCore.so.2.0.0 /build/original/
+CMD (mkdir -p /build/arm/original/) && cp /usr/local/lib/libMagickCore.so.2.0.0 /build/original/arm
 
 #############
 ## patched
@@ -77,4 +77,4 @@ RUN patch magick/cache.c /display_x_feh_cache.diff
 RUN make -j $nproc
 RUN make install
 
-CMD (mkdir -p /build/patched) && cp /usr/local/lib/libMagickCore.so.2.0.0 /build/patched/
+CMD (mkdir -p /build/arm/patched) && cp /usr/local/lib/libMagickCore.so.2.0.0 /build/arm/patched/

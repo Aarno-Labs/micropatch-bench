@@ -25,7 +25,7 @@ RUN mkdir -p /gzip-bin && ./configure --prefix /gzip-bin
 RUN make -j $nproc
 RUN make install
 
-CMD mkdir -p /build/gzip-bin && cp -R /gzip-bin/* /build/gzip-bin/
+CMD mkdir -p /build/original && cp -R /gzip-bin/* /build/original
 
 # Patched build
 FROM gzip-a1d3d4019d-f17cbd13a1 as gzip-a1d3d4019d-f17cbd13a1-patched
@@ -36,6 +36,6 @@ RUN patch /gzip-src/gzip.c /gzip.c.diff
 RUN make -j $nproc
 RUN make install
 
-CMD mkdir -p /build/gzip-bin-patched && cp -R /gzip-bin/* /build/gzip-bin-patched
+CMD mkdir -p /build/patched && cp -R /gzip-bin/* /build/patched
 
 

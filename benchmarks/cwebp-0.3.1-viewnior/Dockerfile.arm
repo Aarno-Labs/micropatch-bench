@@ -39,7 +39,7 @@ ARG nproc=1
 RUN make -j $nproc
 RUN make install
 
-CMD (mkdir -p /build/original/) && cp /libwebp-0.3.1/examples/.libs/$binary /build/original/$binary.arm
+CMD (mkdir -p /build/arm/original/) && cp /libwebp-0.3.1/examples/.libs/$binary /build/arm/original
 
 #############
 ## patched
@@ -51,5 +51,5 @@ RUN patch examples/jpegdec.c /cwebp_x_viewnior.diff
 
 RUN make -j $nproc
 RUN make install
-CMD (mkdir -p /build/patched) && cp /libwebp-0.3.1/examples/.libs/$binary /build/patched/$binary.arm
+CMD (mkdir -p /build/arm/patched) && cp /libwebp-0.3.1/examples/.libs/$binary /build/arm/patched
 

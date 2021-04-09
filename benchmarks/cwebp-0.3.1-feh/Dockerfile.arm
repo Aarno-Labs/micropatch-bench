@@ -36,7 +36,7 @@ ARG nproc=1
 RUN make -j $nproc
 RUN make install
 
-CMD (mkdir -p /build/original/arm) && cp /libwebp-0.3.1/examples/.libs/cwebp /build/original/arm
+CMD (mkdir -p /build/arm/original) && cp /libwebp-0.3.1/examples/.libs/cwebp /build/arm/original
 
 #############
 ## patched
@@ -48,5 +48,5 @@ RUN patch examples/jpegdec.c /cwebp_x_feh.diff
 
 RUN make -j $nproc
 RUN make install
-CMD (mkdir -p /build/patched/arm) && cp /libwebp-0.3.1/examples/.libs/cwebp /build/patched/arm
+CMD (mkdir -p /build/arm/patched) && cp /libwebp-0.3.1/examples/.libs/cwebp /build/arm/patched
 

@@ -127,7 +127,7 @@ ARG nproc=1
 RUN make -j $nproc
 RUN make install
 
-CMD (mkdir -p /build/original/) && cp /libpng-1.2.50/.libs/$binary /build/original/$binary.arm
+CMD (mkdir -p /build/arm/original/) && cp /libpng-1.2.50/.libs/$binary /build/arm/original
 
 #############
 ## patched
@@ -144,4 +144,4 @@ WORKDIR /dillo-2.1
 RUN make -j $nproc
 RUN make install
 
-CMD (mkdir -p /build/patched) && cp /libpng-1.2.50/.libs/$binary /build/patched/$binary.arm
+CMD (mkdir -p /build/arm/patched) && cp /libpng-1.2.50/.libs/$binary /build/arm/patched/

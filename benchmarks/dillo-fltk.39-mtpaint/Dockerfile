@@ -54,7 +54,7 @@ ARG nproc=1
 RUN make -j $nproc
 RUN make install
 
-CMD (mkdir -p /build/original/) && cp  /dillo-2.1/src/dillo /build/original/
+CMD (mkdir -p /build/arm/original/) && cp  /dillo-2.1/src/dillo /build/arm/original/
 
 #############
 ## patched
@@ -71,4 +71,4 @@ WORKDIR /dillo-2.1
 RUN make -j $nproc
 RUN make install
 
-CMD (mkdir -p /build/patched) && cp /dillo-2.1/src/dillo /build/patched/
+CMD (mkdir -p /build/arm/patched) && cp /dillo-2.1/src/dillo /build/arm/patched/

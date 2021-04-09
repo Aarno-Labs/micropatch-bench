@@ -47,7 +47,7 @@ FROM jasper-1.900.1-openjpeg-common-arm as jasper-1.900.1-openjpeg-arm
 ARG nproc=1
 RUN make -j $nproc
 RUN make install
-CMD (mkdir -p /build/original/) && cp $modified_files /build/original/
+CMD (mkdir -p /build/arm/original/) && cp $modified_files /build/arm/original/
 
 #############
 ## patched
@@ -59,4 +59,4 @@ ADD jasper-1.900.1-openjpeg/patches/jasper_jpc_dec.c.diff /
 RUN patch /jasper-1.900.1/src/libjasper/jpc/jpc_dec.c /jasper_jpc_dec.c.diff
 RUN make -j $nproc
 RUN make install
-CMD (mkdir -p /build/patched) && cp $modified_files /build/patched/
+CMD (mkdir -p /build/arm/patched) && cp $modified_files /build/arm/patched/
