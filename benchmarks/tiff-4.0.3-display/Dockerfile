@@ -10,7 +10,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
     libtool
 
 
-ADD tiff-4.0.3.tar.gz /
+ADD tiff-4.0.3-display/tiff-4.0.3.tar.gz /
 WORKDIR /tiff-4.0.3
 RUN ./configure
 
@@ -28,7 +28,7 @@ CMD (mkdir -p /build/original/) && cp /tiff-4.0.3/tools/.libs/gif2tiff /build/or
 FROM tiff-4.0.3-display-common as tiff-4.0.3-display-patched
 ARG nproc=1
 
-ADD patches /
+ADD tiff-4.0.3-display/patches /
 RUN patch /tiff-4.0.3/tools/gif2tiff.c /gif2tiff_x_display_gif2tiff355.diff
 
 RUN make -j $nproc

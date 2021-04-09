@@ -1,0 +1,80 @@
+FROM ubuntu:12.10 as display-cache.3787-feh-common-arm
+ARG nproc=1
+
+
+ADD files/sources.quantal.list /etc/apt/sources.list
+
+
+RUN sed -i -re 's/([a-z]{2}\.)?archive.ubuntu.com|security.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
+    build-essential \
+    autoconf \
+    python \
+    libtool \
+    pkg-config \
+    flex \
+    bison \
+    apt-utils
+
+RUN dpkg --add-architecture armel
+RUN DEBIAN_FRONTEND=noninteractive apt-get update
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y libx11-dev:armel 
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y libxi-dev:armel
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y cpp:armel
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y xutils-dev:armel
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y zlib1g-dev:armel
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y libglu1-mesa-dev:armel
+
+ENV CONFIGURE_HOST "--host=arm-linux-gnueabi"
+ENV CC  /usr/bin/arm-linux-gnueabi-gcc
+ENV CXX /usr/bin/arm-linux-gnueabi-g++
+ENV PKG_CONFIG_PATH=/usr/lib/arm-linux-gnueabi/pkgconfig
+
+
+
+ADD display-cache.3787-feh/deps/zlib-1.2.5.tar.bz2 .
+WORKDIR /zlib-1.2.5
+RUN ./configure
+RUN make -j $nproc install
+
+ADD display-cache.3787-feh/deps/jpegsrc.v8b.tar.gz  /
+WORKDIR /jpeg-8b
+RUN ./configure --host=arm-linux-gnueabi
+RUN make -j $nproc install
+
+ADD display-cache.3787-feh/deps/libpng-1.2.50.tar.gz /
+WORKDIR /libpng-1.2.50
+RUN ./configure --host=arm-linux-gnueabi
+RUN make -j $nproc install
+
+# configure the Imag
+
+ADD display-cache.3787-feh/ImageMagick-6.5.2-8.tar.gz /
+WORKDIR /ImageMagick-6.5.2-8
+RUN ./configure --without-perl --host=arm-linux-gnueabi
+
+
+#############
+## unpatched
+FROM display-cache.3787-feh-common-arm as display-cache.3787-feh-arm
+ARG nproc=1
+RUN make -j $nproc
+RUN make install
+
+CMD (mkdir -p /build/original/) && cp /usr/local/lib/libMagickCore.so.2.0.0 /build/original/
+
+#############
+## patched
+FROM display-cache.3787-feh-common-arm as display-cache.3787-feh-patched-arm
+ARG nproc=1
+
+WORKDIR /ImageMagick-6.5.2-8
+
+ADD display-cache.3787-feh/patches /
+RUN patch magick/cache.c /display_x_feh_cache.diff
+RUN make -j $nproc
+RUN make install
+
+CMD (mkdir -p /build/patched) && cp /usr/local/lib/libMagickCore.so.2.0.0 /build/patched/

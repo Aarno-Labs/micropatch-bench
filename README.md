@@ -38,6 +38,12 @@ Build benchmark: build-benchmark.sh benchmark-name
 The `all.sh` script will build all benchmarks.  It has no arguments
 and must be run from the root directory of this repo.
 
+## Building the Benchmarks
+To build an arm benchmark, use 
+```
+./arm.sh [benchmark-name]
+```
+
 ## Benchmark Patch Details
 
 We are in the process creating a document that presents a

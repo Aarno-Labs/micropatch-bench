@@ -15,7 +15,7 @@ for benchmark in *; do
 
     # need to have CWD as the root for the ./build-benchmark.sh script
     cd $root_dir
-    ./build-benchmark.sh $benchmark
+    ./build-benchmark.sh $@ $benchmark
   
 done
 

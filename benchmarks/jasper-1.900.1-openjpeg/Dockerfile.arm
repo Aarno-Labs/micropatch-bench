@@ -1,0 +1,62 @@
+FROM ubuntu:12.10 as jasper-1.900.1-openjpeg-common-arm
+ARG nproc=1
+
+RUN sed -i -re 's/([a-z]{2}\.)?archive.ubuntu.com|security.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
+    build-essential \
+    autoconf \
+    python \
+    libtool \
+    pkg-config \
+    flex \
+    bison \
+    gcc make gcc-arm-linux-gnueabi binutils-arm-linux-gnueabi    
+    
+ARG src_tar=jasper-1.900.1.tgz
+ENV modified_files="/jasper-1.900.1/src/appl/jasper"
+
+
+# ENV PATH $PATH:/opt/cross/arm-linux-gnueabi/bin:/opt/cross/arm-linux-musleabi/libexec/gcc/arm-linux-gnueabi/9.2.0
+ENV CONFIGURE_HOST "--host=arm-linux-gnueabi"
+ENV CC  /usr/bin/arm-linux-gnueabi-gcc
+ENV CXX /opt/bin/arm-linux-gnueabi-g++
+
+
+# Build dependencies
+
+ADD jasper-1.900.1-openjpeg/deps/jpegsrc.v8b.tar.gz /
+WORKDIR /jpeg-8b
+RUN ./configure --host=arm-linux-gnueabi
+RUN make -j $nproc 
+RUN make -j $nproc install
+
+
+######################
+# jasper
+######################
+WORKDIR /
+ADD jasper-1.900.1-openjpeg/jasper-1.900.1.tgz /
+
+WORKDIR /jasper-1.900.1
+RUN ./configure --host=arm-linux-gnueabi
+
+#############
+## unpatched
+FROM jasper-1.900.1-openjpeg-common-arm as jasper-1.900.1-openjpeg-arm
+ARG nproc=1
+RUN make -j $nproc
+RUN make install
+CMD (mkdir -p /build/original/) && cp $modified_files /build/original/
+
+#############
+## patched
+FROM jasper-1.900.1-openjpeg-common-arm as jasper-1.900.1-openjpeg-patched-arm
+ARG nproc=1
+
+WORKDIR /jasper-1.900.1
+ADD jasper-1.900.1-openjpeg/patches/jasper_jpc_dec.c.diff /
+RUN patch /jasper-1.900.1/src/libjasper/jpc/jpc_dec.c /jasper_jpc_dec.c.diff
+RUN make -j $nproc
+RUN make install
+CMD (mkdir -p /build/patched) && cp $modified_files /build/patched/

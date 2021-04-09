@@ -16,7 +16,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
 
 
 # configure the wireshark
-ADD wireshark-1.4.14.tgz /
+ADD wireshark-1.4.14-1.8.6/wireshark-1.4.14.tgz /
 WORKDIR /wireshark-1.4.14
 
 RUN ./autogen.sh
@@ -36,7 +36,7 @@ CMD (mkdir -p /build/original/) && cp /usr/local/lib/libwireshark.so.0.0.1 /buil
 FROM wireshark-1.4.14-1.8.6-common as wireshark-1.4.14-1.8.6-patched
 ARG nproc=1
 
-ADD patches /
+ADD wireshark-1.4.14-1.8.6/patches /
 RUN patch /wireshark-1.4.14/epan/dissectors/packet-dcp-etsi.c /wireshark_packet-dcp-etsi.c.diff
 
 RUN make -j $nproc

@@ -10,7 +10,7 @@ ARG src_tar=gmp-13421-src.tar.gz
 ENV modified_files=""
 
 # build 
-COPY $src_tar .
+COPY gmp-13420-13421/$src_tar .
 RUN tar xvzf $src_tar
 
 WORKDIR gmp-src
@@ -33,7 +33,7 @@ CMD (mkdir -p /build/gmp-bin) && cp -R /gmp-bin/* /build/gmp-bin/
 FROM gmp-13420-13421 as gmp-13420-13421-patched
 ARG nproc=1
 
-ADD patches /
+ADD gmp-13420-13421/patches /
 RUN patch /gmp-src/mpn/generic/powm.c /mpn_generic_powm.c.diff
 RUN make -j $nproc
 RUN make install

@@ -8,7 +8,7 @@ ARG src_tar=php-efcb9a71-src.tar.gz
 
 # Build dependencies
 
-COPY deps .
+COPY php-310011-310050/deps .
 
 RUN tar xvzf libxml2-2.7.2.tar.gz
 RUN cd libxml2-2.7.2 &&\
@@ -40,7 +40,7 @@ RUN cd bison-2.2 && \
     make -j $nproc && \
     make install
 
-COPY $src_tar .
+COPY php-310011-310050/$src_tar .
 RUN tar xvzf $src_tar
 
 WORKDIR php-src
@@ -49,15 +49,15 @@ RUN ./buildconf --force
 RUN ./configure
 RUN make -j $nproc
 
-CMD cp /php-src/sapi/cli/php /build/php
+CMD (mkdir -p /build/original) && cp /php-src/sapi/cli/php /build/php
 
 # Patched build
 FROM php-310011-310050 as php-310011-310050-patched
 ARG nproc=1
 
-ADD patches /
+ADD php-310011-310050/patches /
 RUN patch Zend/zend_variables.c /Zend_zend_variables.c.diff
 RUN make -j $nproc
 
-CMD cp /php-src/sapi/cli/php /build/php-patched
+CMD (mkdir -p /build/patched) && cp /php-src/sapi/cli/php /build/php-patched
 

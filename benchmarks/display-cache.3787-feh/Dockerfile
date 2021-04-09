@@ -18,24 +18,24 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
     libglu1-mesa-dev
 
 
-ADD deps/zlib-1.2.5.tar.bz2 .
+ADD display-cache.3787-feh/deps/zlib-1.2.5.tar.bz2 .
 WORKDIR /zlib-1.2.5
 RUN ./configure
 RUN make -j $nproc install
 
-ADD deps/jpegsrc.v8b.tar.gz  /
+ADD display-cache.3787-feh/deps/jpegsrc.v8b.tar.gz  /
 WORKDIR /jpeg-8b
 RUN ./configure
 RUN make -j $nproc install
 
-ADD deps/libpng-1.2.50.tar.gz /
+ADD display-cache.3787-feh/deps/libpng-1.2.50.tar.gz /
 WORKDIR /libpng-1.2.50
 RUN ./configure
 RUN make -j $nproc install
 
 # configure the Imag
 
-ADD ImageMagick-6.5.2-8.tar.gz /
+ADD display-cache.3787-feh/ImageMagick-6.5.2-8.tar.gz /
 WORKDIR /ImageMagick-6.5.2-8
 RUN ./configure --without-perl
 
@@ -56,7 +56,7 @@ ARG nproc=1
 
 WORKDIR /ImageMagick-6.5.2-8
 
-ADD patches /
+ADD display-cache.3787-feh/patches /
 RUN patch magick/cache.c /display_x_feh_cache.diff
 RUN make -j $nproc
 RUN make install

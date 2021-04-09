@@ -8,7 +8,7 @@ ARG src_tar=php-f455f8-src.tar.gz
 
 # Build dependencies
 
-COPY deps .
+COPY php-307562-307561/deps .
 
 RUN tar xvzf libxml2-2.7.2.tar.gz
 RUN cd libxml2-2.7.2 &&\
@@ -40,7 +40,7 @@ RUN cd bison-2.2 && \
     make -j $nproc && \
     make install
 
-COPY $src_tar .
+COPY php-307562-307561/$src_tar .
 RUN tar xvzf $src_tar
 
 WORKDIR php-src
@@ -55,7 +55,7 @@ CMD cp /php-src/sapi/cli/php /build/php
 FROM php-307562-307561 as php-307562-307561-patched
 ARG nproc=1
 
-ADD patches /
+ADD php-307562-307561/patches /
 RUN patch ext/dom/document.c /ext_dom_document.c.diff 
 RUN make -j $nproc
 

@@ -1,0 +1,51 @@
+FROM ubuntu:14.04 as gmp-13420-13421-arm
+ARG nproc=1
+
+RUN apt-get update && apt-get --no-install-recommends install -y \
+    build-essential make curl wget rsync autoconf autogen \
+    libtool m4 automake1.11 texinfo
+    
+RUN apt-get install -y  gcc make gcc-arm-linux-gnueabi binutils-arm-linux-gnueabi libc6-dev-armel-cross
+
+ENV PATH $PATH:/opt/cross/arm-linux-musleabi/bin:/opt/cross/arm-linux-musleabi/libexec/gcc/arm-linux-musleabi/9.2.0
+ENV CONFIGURE_HOST "--host=arm-linux-musleabi"
+ENV CC  /usr/bin/arm-linux-gnueabi-gcc
+ENV CXX /usr/bin/arm-linux-musleabi/bin/arm-linux-musleabi-g++
+
+
+ARG src_tar=gmp-13421-src.tar.gz
+
+ENV modified_files=""
+
+# build 
+COPY gmp-13420-13421/$src_tar .
+RUN tar xvzf $src_tar
+
+WORKDIR gmp-src
+
+# Do some fixes on the configure and makefile
+RUN sed -i s/AM_INIT_AUTOMAKE/'AM_INIT_AUTOMAKE([1.8 gnu no-dependencies])\n'/g configure.in
+RUN sed -i s/AM_C_PROTOTYPES//g configure.in
+RUN sed -i s/ansi2knr//g Makefile.am
+
+RUN sh .bootstrap
+RUN cat Makefile.am
+RUN autoreconf -fvi
+RUN mkdir -p /gmp-bin && ./configure --host=arm-linux-gnueabi --prefix=/gmp-bin
+RUN make -j $nproc
+RUN make install
+
+CMD (mkdir -p /build/gmp-bin) && cp -R /gmp-bin/* /build/gmp-bin/
+
+# Patched build
+FROM gmp-13420-13421-arm as gmp-13420-13421-patched-arm
+ARG nproc=1
+
+ADD gmp-13420-13421/patches /
+RUN patch /gmp-src/mpn/generic/powm.c /mpn_generic_powm.c.diff
+RUN make -j $nproc
+RUN make install
+
+CMD (mkdir -p /build/gmp-bin-patched ) && cp -R /gmp-bin/* /build/gmp-bin-patched/
+
+

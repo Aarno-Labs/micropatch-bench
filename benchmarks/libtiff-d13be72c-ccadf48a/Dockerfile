@@ -10,7 +10,7 @@ ARG src_tar=libtiff-3edb9cd-src.tar.gz
 ENV modified_files="/libtiff-src/libtiff/.libs/libtiff.a /libtiff-src/libtiff/.libs/libtiffxx.a"
 
 # Build dependencies
-COPY deps .
+COPY libtiff-d13be72c-ccadf48a/deps .
 
 RUN tar xvzf jpegsrc.v9a.tar.gz
 RUN cd jpeg-9a &&\
@@ -19,7 +19,7 @@ RUN cd jpeg-9a &&\
     make install
 
 # build 
-COPY $src_tar .
+COPY libtiff-d13be72c-ccadf48a/$src_tar .
 RUN tar xvzf $src_tar
 
 WORKDIR libtiff-src
@@ -37,7 +37,7 @@ CMD (mkdir -p /build/original/) && cp $modified_files /build/original/
 FROM libtiff-d13be72c-ccadf48a as libtiff-d13be72c-ccadf48a-patched
 ARG nproc=1
 
-ADD patches /
+ADD libtiff-d13be72c-ccadf48a/patches /
 RUN patch /libtiff-src/libtiff/tif_dirread.c /libtiff_tif_dirread.c.diff
 RUN make -j $nproc
 

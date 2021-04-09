@@ -10,7 +10,7 @@ ARG src_tar=libtiff-eec7ec0-src.tar.gz
 ENV modified_files="/libtiff-src/port/.libs/libport.a /libtiff-src/libtiff/.libs/libtiff.a /libtiff-src/libtiff/.libs/libtiffxx.a /libtiff-src/tools/tiff2pdf.o"
 
 # Build dependencies
-COPY deps .
+COPY libtiff-ee2ce5b7-b5691a5a/deps .
 
 RUN tar xvzf jpegsrc.v9a.tar.gz
 RUN cd jpeg-9a &&\
@@ -19,7 +19,7 @@ RUN cd jpeg-9a &&\
     make install
 
 # build 
-COPY $src_tar .
+COPY libtiff-ee2ce5b7-b5691a5a/$src_tar .
 RUN tar xvzf $src_tar
 
 WORKDIR libtiff-src
@@ -35,7 +35,7 @@ CMD (mkdir -p /build/original/ ) && cp $modified_files /build/original/
 FROM libtiff-ee2ce5b7-b5691a5a as libtiff-ee2ce5b7-b5691a5a-patched
 ARG nproc=1
 
-ADD patches /
+ADD libtiff-ee2ce5b7-b5691a5a/patches /
 RUN patch /libtiff-src/tools/tiff2pdf.c /tools_tiff2pdf.c.diff
 RUN make -j $nproc
 

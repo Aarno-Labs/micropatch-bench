@@ -1,0 +1,52 @@
+FROM ubuntu:12.10 as cwebp-0.3.1-feh-common-arm
+ARG nproc=1
+
+RUN sed -i -re 's/([a-z]{2}\.)?archive.ubuntu.com|security.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
+    build-essential \
+    autoconf \
+    python \
+    libtool \
+    pkg-config \
+    flex \
+    bison \
+    gcc make gcc-arm-linux-gnueabi binutils-arm-linux-gnueabi
+
+ENV CONFIGURE_HOST "--host=arm-linux-gnueabi"
+ENV CC  /usr/bin/arm-linux-gnueabi-gcc
+ENV CXX /usr/bin/arm-linux-gnueabi-g++
+ENV PKG_CONFIG_PATH /usr/lib/arm-linux-gnueabi/pkgconfig
+
+# add jpeg
+ADD cwebp-0.3.1-feh/deps/jpegsrc.v8b.tar.gz  /
+WORKDIR /jpeg-8b 
+RUN ./configure --host=arm-linux-gnueabi
+RUN make -j $nproc install
+
+# configure the libwebp
+ADD cwebp-0.3.1-feh/libwebp-0.3.1.tar.gz /
+WORKDIR /libwebp-0.3.1
+RUN ./configure --host=arm-linux-gnueabi
+
+#############
+## unpatched
+FROM cwebp-0.3.1-feh-common-arm as cwebp-0.3.1-feh-arm
+ARG nproc=1
+RUN make -j $nproc
+RUN make install
+
+CMD (mkdir -p /build/original/arm) && cp /libwebp-0.3.1/examples/.libs/cwebp /build/original/arm
+
+#############
+## patched
+FROM cwebp-0.3.1-feh-common-arm as cwebp-0.3.1-feh-patched-arm
+ARG nproc=1
+
+ADD cwebp-0.3.1-feh/patches /
+RUN patch examples/jpegdec.c /cwebp_x_feh.diff
+
+RUN make -j $nproc
+RUN make install
+CMD (mkdir -p /build/patched/arm) && cp /libwebp-0.3.1/examples/.libs/cwebp /build/patched/arm
+

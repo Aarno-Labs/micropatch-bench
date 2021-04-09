@@ -10,7 +10,7 @@ ARG src_tar=gzip-f17cbd13a1d0a7-src.tar.gz
 ENV modified_files=""
 
 # build 
-COPY $src_tar .
+COPY gzip-a1d3d4019d-f17cbd13a1/$src_tar .
 RUN tar xvzf $src_tar
 
 WORKDIR gzip-src
@@ -31,7 +31,7 @@ CMD mkdir -p /build/gzip-bin && cp -R /gzip-bin/* /build/gzip-bin/
 FROM gzip-a1d3d4019d-f17cbd13a1 as gzip-a1d3d4019d-f17cbd13a1-patched
 ARG nproc=1
 
-ADD patches /
+ADD gzip-a1d3d4019d-f17cbd13a1/patches /
 RUN patch /gzip-src/gzip.c /gzip.c.diff
 RUN make -j $nproc
 RUN make install

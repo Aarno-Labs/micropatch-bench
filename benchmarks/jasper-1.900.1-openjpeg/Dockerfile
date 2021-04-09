@@ -18,7 +18,7 @@ ENV modified_files="/jasper-1.900.1/src/appl/jasper"
 
 # Build dependencies
 
-ADD deps/jpegsrc.v8b.tar.gz /
+ADD jasper-1.900.1-openjpeg/deps/jpegsrc.v8b.tar.gz /
 WORKDIR /jpeg-8b
 RUN ./configure
 RUN make -j $nproc 
@@ -29,7 +29,7 @@ RUN make -j $nproc install
 # jasper
 ######################
 WORKDIR /
-ADD jasper-1.900.1.tgz /
+ADD jasper-1.900.1-openjpeg/jasper-1.900.1.tgz /
 
 WORKDIR /jasper-1.900.1
 RUN ./configure
@@ -48,7 +48,7 @@ FROM jasper-1.900.1-openjpeg-common as jasper-1.900.1-openjpeg-patched
 ARG nproc=1
 
 WORKDIR /jasper-1.900.1
-ADD patches/jasper_jpc_dec.c.diff /
+ADD jasper-1.900.1-openjpeg/patches/jasper_jpc_dec.c.diff /
 RUN patch /jasper-1.900.1/src/libjasper/jpc/jpc_dec.c /jasper_jpc_dec.c.diff
 RUN make -j $nproc
 RUN make install

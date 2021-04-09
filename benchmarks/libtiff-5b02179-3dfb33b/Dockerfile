@@ -10,7 +10,7 @@ ARG src_tar=libtiff-2e42d63f-src.tar.gz
 ENV modified_files="/libtiff-src/tools/.libs/tiffcrop /libtiff-src/tools/tiffcrop.o"
 
 # Build dependencies
-COPY deps .
+COPY libtiff-5b02179-3dfb33b/deps .
 
 RUN tar xvzf jpegsrc.v9a.tar.gz
 RUN cd jpeg-9a &&\
@@ -19,7 +19,7 @@ RUN cd jpeg-9a &&\
     make install
 
 # build 
-COPY $src_tar .
+COPY libtiff-5b02179-3dfb33b/$src_tar .
 RUN tar xvzf $src_tar
 
 WORKDIR libtiff-src
@@ -37,7 +37,7 @@ CMD (mkdir -p /build/original) && cp $modified_files /build/original
 FROM libtiff-5b02179-3dfb33b as libtiff-5b02179-3dfb33b-patched
 ARG nproc=1
 
-ADD patches /
+ADD libtiff-5b02179-3dfb33b/patches /
 RUN patch tools/tiffcrop.c /tools_tiffcrop.c.diff
 RUN make -j $nproc
 

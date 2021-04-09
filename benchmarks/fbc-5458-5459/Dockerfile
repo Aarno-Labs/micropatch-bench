@@ -20,7 +20,7 @@ ARG src_tar=fbc-5459-src.tar.gz
 ENV modified_files=""
 
 # build 
-COPY $src_tar .
+COPY fbc-5458-5459/$src_tar .
 RUN tar xvzf $src_tar
 
 WORKDIR /fbc-src
@@ -56,7 +56,7 @@ CMD (mkdir -p /build/fbc-root) && cp -R fbc-root/* /build/fbc-root
 FROM fbc-5458-5459 as fbc-5458-5459-patched
 ARG nproc=1
 
-ADD patches /
+ADD fbc-5458-5459/patches /
 RUN patch fbc-src/src/rtlib/libfb_str_midassign.c /fbc-src_src_rtlib_libfb_str_midassign.c.diff
 RUN make
 

@@ -5,12 +5,17 @@ SCRIPT=`basename ${BASH_SOURCE[0]}`
 #Help function
 function HELP {
   echo -e "Usage: $SCRIPT [-l] [benchmark-name]"
+  echo -e "   -a   build arm version of benchmark."
   echo -e "   -l   List the names of the benchmarks only."
   echo -e "Build benchmark: $SCRIPT benchmark-name"
   exit 1
 }
 
-while getopts lh FLAG; do
+arm=""
+arm_ext=""
+arm_dir=""
+
+while getopts lha FLAG; do
     case $FLAG in
         l)
          # list benchmarks
@@ -19,6 +24,12 @@ while getopts lh FLAG; do
             cd - > /dev/null
             exit 0
         ;;
+	a)
+	    arm=-arm
+	    arm_ext=.arm
+	    arm_dir=arm
+	    break
+	;;
         h)
             HELP
             ;;
@@ -33,16 +44,21 @@ shift $((OPTIND -1))
 
 benchmark=$1; shift 
 
-cd benchmarks/$benchmark
+cd benchmarks
 
-docker build --target=${benchmark} -t ${benchmark}-base --build-arg nproc=`nproc` .
+target=${benchmark}$arm
+tname=${benchmark}-base$arm
 
-docker build --target=${benchmark}-patched -t ${benchmark}-patched --build-arg nproc=`nproc` .
+tpatched=${benchmark}-patched$arm
+pname=${benchmark}-patched$arm
 
-mkdir -p build
+docker build -f $benchmark/Dockerfile$arm_ext --target=$target -t $tname --build-arg nproc=`nproc` .
+docker build -f $benchmark/Dockerfile$arm_ext --target=$tpatched -t $pname  --build-arg nproc=`nproc` .
 
-docker run --rm -v `pwd`/build:/build --user $(id -u):$(id -g) -it ${benchmark}-base
+mkdir -p ${benchmark}/build
 
-docker run --rm -v `pwd`/build:/build --user $(id -u):$(id -g) -it ${benchmark}-patched
+docker run --rm -v `pwd`/${benchmark}/build:/build --user $(id -u):$(id -g) -it $tname
+
+docker run --rm -v `pwd`/${benchmark}/build:/build --user $(id -u):$(id -g) -it $pname
 
 

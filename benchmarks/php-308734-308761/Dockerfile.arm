@@ -1,0 +1,87 @@
+FROM ubuntu:14.04 as php-308734-308761-arm
+ARG nproc=1
+
+ADD files/sources.trusty.list /etc/apt/sources.list
+
+RUN dpkg --add-architecture armhf
+
+RUN apt-get update && apt-get --no-install-recommends install -y \
+    build-essential make curl wget rsync autoconf2.13
+
+COPY php-308734-308761/deps .
+
+# flex and bison need to be built for the host, not the cross compile
+WORKDIR /
+RUN tar xvzf bison-2.5.1.tar.gz
+WORKDIR /bison-2.5.1
+RUN ./configure
+RUN make -j $nproc
+RUN make install
+    
+WORKDIR /
+RUN tar xvzf flex-2.5.4a.tar.gz
+WORKDIR /flex-2.5.4
+RUN ./configure
+RUN make -j $nproc
+RUN make install
+
+WORKDIR /
+RUN tar xvzf flex-2.5.39.tar.gz
+WORKDIR /flex-2.5.39
+RUN ./configure
+RUN make -j $nproc 
+RUN make install
+
+WORKDIR /
+RUN tar xvzf bison-2.2.tar.gz
+WORKDIR /bison-2.2
+RUN ./configure
+RUN make -j $nproc
+RUN make install
+
+RUN apt-get install -y  gcc make g++-arm-linux-gnueabi gcc-arm-linux-gnueabi binutils-arm-linux-gnueabi
+
+ENV CONFIGURE_HOST "--host=arm-linux-gnueabi"
+ENV CC  /usr/bin/arm-linux-gnueabi-gcc
+ENV CXX /usr/bin/arm-linux-gnueabi-g++
+
+
+
+
+ARG src_tar=php-1d984a7-src.tar.gz
+
+# Build dependencies
+
+WORKDIR /
+RUN tar xvzf libxml2-2.7.2.tar.gz
+WORKDIR /libxml2-2.7.2
+RUN ./configure --host=arm-linux-gnueabi
+RUN make -j $nproc
+RUN make install
+
+
+WORKDIR /
+COPY php-308734-308761/$src_tar .
+RUN tar xvzf $src_tar
+
+WORKDIR /php-src
+
+RUN ./buildconf --force
+RUN ./configure --host=arm-linux-gnueabi  --disable-phar
+RUN make -j $nproc
+
+RUN mkdir -p /build/arm/original
+
+CMD (mkdir -p /build/arm/original) && cp /php-src/sapi/cli/php /build/arm/original/
+
+# Patched build
+FROM php-308734-308761-arm as php-308734-308761-patched-arm
+ARG nproc=1
+
+ADD php-308734-308761/patches /
+RUN patch ext/tokenizer/tokenizer.c /ext_tokenizer_tokenizer.c.diff
+RUN make -j $nproc
+
+RUN mkdir -p /build/arm/patched
+CMD (mkdir -p /build/arm/patched) && cp /php-src/sapi/cli/php /build/arm/patched
+

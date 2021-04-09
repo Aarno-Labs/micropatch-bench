@@ -18,22 +18,22 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
     libglu1-mesa-dev
 
 
-ADD deps/zlib-1.2.5.tar.bz2 .
+ADD dillo-png.203-feh/deps/zlib-1.2.5.tar.bz2 .
 WORKDIR /zlib-1.2.5
 RUN ./configure
 RUN make -j $nproc install
 
-ADD deps/jpegsrc.v8b.tar.gz  /
+ADD dillo-png.203-feh/deps/jpegsrc.v8b.tar.gz  /
 WORKDIR /jpeg-8b
 RUN ./configure
 RUN make -j $nproc install
 
-ADD deps/libpng-1.2.50.tar.gz /
+ADD dillo-png.203-feh/deps/libpng-1.2.50.tar.gz /
 WORKDIR /libpng-1.2.50
 RUN ./configure
 RUN make -j $nproc install
 
-ADD deps/fltk-2.0.tar.gz /
+ADD dillo-png.203-feh/deps/fltk-2.0.tar.gz /
 WORKDIR /fltk-2.0
 RUN autoconf
 RUN ./configure
@@ -42,7 +42,7 @@ RUN make install
 
 # configure the dillo-2.1
 
-ADD dillo-2.1.tar.bz2 /
+ADD dillo-png.203-feh/dillo-2.1.tar.bz2 /
 WORKDIR /dillo-2.1
 RUN ./configure
 
@@ -61,7 +61,7 @@ CMD (mkdir -p /build/original/) && cp /libpng-1.2.50/.libs/libpng12.so.0.50.0 /b
 FROM dillo-png.203-feh-common as dillo-png.203-feh-patched
 ARG nproc=1
 
-ADD patches /
+ADD dillo-png.203-feh/patches /
 RUN patch /libpng-1.2.50/pngrutil.c /dillo_x_feh_png203.diff
 WORKDIR /libpng-1.2.50
 RUN make -j $nproc

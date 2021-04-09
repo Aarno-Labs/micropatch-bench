@@ -14,11 +14,11 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
     guile-1.8-dev    
 
 
-ADD serveez-0.1.7.tar.gz /
+ADD serveez-0.1.7-bugtraq-42560/serveez-0.1.7.tar.gz /
 
 # the patch on this version doesn't appear until later
-ADD deps/cpp-tricks.h /serveez-0.1.7/src/
-ADD deps/guile-baux.tgz /
+ADD serveez-0.1.7-bugtraq-42560/deps/cpp-tricks.h /serveez-0.1.7/src/
+ADD serveez-0.1.7-bugtraq-42560/deps/guile-baux.tgz /
 
 ENV PATH=$PATH:/guile-baux
 
@@ -42,7 +42,7 @@ CMD (mkdir -p /build/original/) && cp /usr/local/bin/serveez /build/original/
 FROM serveez-0.1.7-bugtraq-42560-common as serveez-0.1.7-bugtraq-42560-patched
 ARG nproc=1
 
-ADD patches /
+ADD serveez-0.1.7-bugtraq-42560/patches /
 RUN patch  /serveez-0.1.7/src/http-server/http-core.c /http-core.c.diff
 
 RUN make -j $nproc

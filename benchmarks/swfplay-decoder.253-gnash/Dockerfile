@@ -21,7 +21,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
 
 
 
-ADD swfdec-0.5.5.tar.gz /
+ADD swfplay-decoder.253-gnash/swfdec-0.5.5.tar.gz /
 WORKDIR /swfdec-0.5.5
 RUN ./configure --with-audio=none --disable-soup --prefix=/swfplay
 
@@ -40,7 +40,7 @@ CMD (mkdir -p /build/original/) && cp  /swfplay/lib/libswfdec-0.5.so.5.0.0 /buil
 FROM swfplay-decoder.253-gnash-common as swfplay-decoder.253-gnash-patched
 ARG nproc=1
 
-ADD patches /
+ADD swfplay-decoder.253-gnash/patches /
 RUN patch /swfdec-0.5.5/libswfdec/jpeg/jpeg.c /swfplay_x_gnash_decoder253.diff
 RUN make -j $nproc
 RUN make install

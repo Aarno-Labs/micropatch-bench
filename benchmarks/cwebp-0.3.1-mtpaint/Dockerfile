@@ -14,13 +14,13 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
 
 
 # add jpeg
-ADD deps/jpegsrc.v8b.tar.gz  /
+ADD cwebp-0.3.1-mtpaint/deps/jpegsrc.v8b.tar.gz  /
 WORKDIR /jpeg-8b
 RUN ./configure
 RUN make -j $nproc install
 
 # configure the libwebp
-ADD libwebp-0.3.1.tar.gz /
+ADD cwebp-0.3.1-mtpaint/libwebp-0.3.1.tar.gz /
 WORKDIR /libwebp-0.3.1
 RUN ./configure
 
@@ -38,7 +38,7 @@ CMD (mkdir -p /build/original/) && cp /libwebp-0.3.1/examples/.libs/cwebp /build
 FROM cwebp-0.3.1-mtpaint-common as cwebp-0.3.1-mtpaint-patched
 ARG nproc=1
 
-ADD patches /
+ADD cwebp-0.3.1-mtpaint/patches /
 RUN patch examples/jpegdec.c /cwebp_x_mtpaint.diff
 
 RUN make -j $nproc
