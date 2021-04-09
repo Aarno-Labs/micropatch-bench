@@ -52,13 +52,19 @@ tname=${benchmark}-base$arm
 tpatched=${benchmark}-patched$arm
 pname=${benchmark}-patched$arm
 
-docker build -f $benchmark/Dockerfile$arm_ext --target=$target -t $tname --build-arg nproc=`nproc` .
-docker build -f $benchmark/Dockerfile$arm_ext --target=$tpatched -t $pname  --build-arg nproc=`nproc` .
+dockerfile=$benchmark/Dockerfile$arm_ext
 
-mkdir -p ${benchmark}/build
+if [[ ! -f $dockerfile ]]
+then
+    echo "Skipping $benchmark: $dockerfile does not exist"
+else
+    docker build -f $dockerfile --target=$target -t $tname --build-arg nproc=`nproc` .
+    docker build -f $dockerfile --target=$tpatched -t $pname  --build-arg nproc=`nproc` .
 
-docker run --rm -v `pwd`/${benchmark}/build:/build --user $(id -u):$(id -g) -it $tname
+    mkdir -p ${benchmark}/build
 
-docker run --rm -v `pwd`/${benchmark}/build:/build --user $(id -u):$(id -g) -it $pname
+    docker run --rm -v `pwd`/${benchmark}/build:/build --user $(id -u):$(id -g) -it $tname
 
+    docker run --rm -v `pwd`/${benchmark}/build:/build --user $(id -u):$(id -g) -it $pname
+fi
 
