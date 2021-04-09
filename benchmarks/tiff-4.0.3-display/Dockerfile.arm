@@ -1,10 +1,15 @@
-FROM ubuntu:12.10 as wireshark-1.4.6-cve-2011-2174-common-arm
+FROM ubuntu:12.10 as tiff-4.0.3-display-common-arm
 ARG nproc=1
 
 ADD files/sources.quantal.list /etc/apt/sources.list
 
 
 # RUN sed -i -re 's/([a-z]{2}\.)?archive.ubuntu.com|security.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
+
+
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get update
+
 
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y \
@@ -58,48 +63,35 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y liboil0.3-dev:armel
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y libgstreamer0.10-dev:armel
 
 
-# something is deleting this
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y python libtool
-
-
 ENV CONFIGURE_HOST "--host=arm-linux-gnueabi"
 ENV CC  /usr/bin/arm-linux-gnueabi-gcc
 ENV CXX /usr/bin/arm-linux-gnueabi-g++
 ENV PKG_CONFIG_PATH /usr/lib/arm-linux-gnueabi/pkgconfig
 ENV LDFLAGS=-lm
 
-ADD files/libpcap-0.8.3.tar.gz /
-WORKDIR /libpcap-0.8.3
-RUN ./configure --host=arm-linux-gnueabi
-RUN make -j $nproc 
-RUN make install
 
-
-# configure the wireshark
-ADD wireshark-1.4.6-cve-2011-2174/wireshark-1.4.6.tar.bz2 /
-WORKDIR /wireshark-1.4.6
-
-RUN ./autogen.sh
+ADD tiff-4.0.3-display/tiff-4.0.3.tar.gz /
+WORKDIR /tiff-4.0.3
 RUN ./configure --host=arm-linux-gnueabi
 
 #############
-## wireshark-1.4.6-cve-2011-2174
-FROM wireshark-1.4.6-cve-2011-2174-common-arm as wireshark-1.4.6-cve-2011-2174-arm
+## tiff-4.0.3-display-common-base
+FROM tiff-4.0.3-display-common-arm as tiff-4.0.3-display-arm
 ARG nproc=1
-RUN make -j $nproc 
+RUN make -j $nproc
 RUN make install
 
-CMD (mkdir -p /build/arm/original/) && cp /usr/local/lib/libwireshark.so.0.0.1 /build/arm/original/
+CMD (mkdir -p /build/arm/original/) && cp /tiff-4.0.3/tools/.libs/gif2tiff /build/arm/original/
 
 #############
-## wireshark-1.4.6-cve-2011-2174-patched
-FROM wireshark-1.4.6-cve-2011-2174-common-arm as wireshark-1.4.6-cve-2011-2174-patched-arm
+## tiff-4.0.3-display-common-patched
+FROM tiff-4.0.3-display-common-arm as tiff-4.0.3-display-patched-arm
 ARG nproc=1
 
-ADD wireshark-1.4.6-cve-2011-2174/patches /
-RUN patch /wireshark-1.4.6/epan/tvbuff.c /tvbuff.c.diff
+ADD tiff-4.0.3-display/patches /
+RUN patch /tiff-4.0.3/tools/gif2tiff.c /gif2tiff_x_display_gif2tiff355.diff
 
 RUN make -j $nproc
 RUN make install
 
-CMD (mkdir -p /build/arm/patched) && cp /usr/local/lib/libwireshark.so.0.0.1 /build/arm/patched/
+CMD (mkdir -p /build/arm/patched/) && cp  /tiff-4.0.3/tools/.libs/gif2tiff /build/arm/patched/

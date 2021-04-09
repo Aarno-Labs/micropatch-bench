@@ -89,7 +89,7 @@ FROM swfplay-swfdec_image.238-gnash-common-arm as swfplay-swfdec_image.238-gnash
 ARG nproc=1
 
 ADD swfplay-swfdec_image.238-gnash/patches /
-RUN patch /swfdec-0.5.5/libswfdec/jpeg/jpeg.c /swfplay_x_gnash_decoder253.diff
+RUN patch /swfdec-0.5.5/libswfdec/swfdec_image.c /swfplay_x_gnash_jpeg.diff
 RUN make -j $nproc
 RUN make install
 
