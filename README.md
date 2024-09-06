@@ -1,13 +1,13 @@
-# MRAM Patch Benchmarks
+# MicroPatch Bench
 
-**This repo requires [git LFS](https://git-lfs.github.com/), please install and enable before you clone.**
-
-This repository contains real-world patch examples from popular
-open-source programs.  The patches focus on security vulnerabilities
-such as buffer overflows, integer overflows, command injection, etc.
+This repository contains real-world source micro-patching examples
+from popular open-source programs.  The patches focus on security
+vulnerabilities such as buffer overflows, integer overflows, command
+injection, etc.
 
 ## Requirements
 
+* [git LFS](https://git-lfs.github.com/), please install and enable before you clone
 * Linux host (tested with Ubuntu 20.04)
 * Docker (tested with version 19.03.8)
 
@@ -44,15 +44,23 @@ To build an arm benchmark, use
 ./arm.sh [benchmark-name]
 ```
 
-## Benchmark Patch Details
-
-We are in the process creating a document that presents a
-classification for each patched vulnerability and the properties of
-the patch relating to the original program, i.e., modifies dataflow or
-control flow, exits program, etc.  We will make this available soon.
-
 ## Delete Docker Images
 
 ```
 for i in $(ls benchmarks); do docker rmi $i-base; docker rmi $i-patched; done;
 ```
+
+## To Reference
+
+If you plan to use any of the benchmarks in a publication, please let
+us know [info@aarno-labs.com](info@aarno-labs.com).  Refer to the
+suite as "MicroPatch Bench".
+
+Also, please cite this repository.  See the
+[CITATION.cff](CITATION.cff) file.
+
+## Acknowledgments
+
+The work on collecting the programs, patches, and developing the
+infrastructure to build the benchmarks was funded by the DARPA Assured
+Micropatching (AMP) program, contract N6600120C4025.
