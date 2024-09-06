@@ -1,0 +1,16 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: Micropatching Benchmark Suite
+message: >-
+  Micropatching benchmarks compiled by Aarno Labs and MIT
+  for DARPA Assured Micro-patching (AMP). If you use this
+  benchmark suite in your work, please cite this repo.  
+type: dataset
+authors:
+  - name: Aarno Labs
+    address: '330 Washington St., Floor 4'
+    city: Boston
+    country: US
+    post-code: 02109
