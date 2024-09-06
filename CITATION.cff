@@ -2,7 +2,7 @@
 # Visit https://bit.ly/cffinit to generate yours today!
 
 cff-version: 1.2.0
-title: Micropatching Benchmark Suite
+title: MicroPatch Bench
 message: >-
   Micropatching benchmarks compiled by Aarno Labs and MIT
   for DARPA Assured Micro-patching (AMP). If you use this
@@ -14,3 +14,7 @@ authors:
     city: Boston
     country: US
     post-code: 02109
+identifiers:
+  - type: url
+    value: 'https://github.com/Aarno-Labs/micropatch-bench'
+    description: GitHub Repo
