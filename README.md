@@ -53,7 +53,7 @@ for i in $(ls benchmarks); do docker rmi $i-base; docker rmi $i-patched; done;
 ## To Reference
 
 If you plan to use any of the benchmarks in a publication, please let
-us know [info@aarno-labs.com](info@aarno-labs.com).  Refer to the
+us know [info@aarno-labs.com](mailto:info@aarno-labs.com).  Refer to the
 suite as "MicroPatch Bench".
 
 Also, please cite this repository.  See the
