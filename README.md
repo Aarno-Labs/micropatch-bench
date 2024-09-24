@@ -31,18 +31,28 @@ The `build-benchmark.sh` script builds a benchmark.  Here is the usage
 
 ```
 Usage: build-benchmark.sh [-l] [benchmark-name]
+   -a   build arm version of benchmark (x86_64 is the default).
    -l   List the names of the benchmarks only.
 Build benchmark: build-benchmark.sh benchmark-name
 ```
 
+For example, to build the `cwebp-0.3.1-mtpaint` benchmark for arm you would run:
+```
+./build-benchmark.sh -a cwebp-0.3.1-mtpaint
+```
+
+If all goes well, you can find the original and patched binaries under the `build` folder:
+```
+$ ls benchmarks/cwebp-0.3.1-mtpaint/build/arm/*
+benchmarks/cwebp-0.3.1-mtpaint/build/arm/original:
+cwebp
+
+benchmarks/cwebp-0.3.1-mtpaint/build/arm/patched:
+cwebp
+```
+
 The `all.sh` script will build all benchmarks.  It has no arguments
 and must be run from the root directory of this repo.
-
-## Building the Benchmarks
-To build an arm benchmark, use 
-```
-./arm.sh [benchmark-name]
-```
 
 ## Delete Docker Images
 
