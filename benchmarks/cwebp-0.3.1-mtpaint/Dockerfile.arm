@@ -27,7 +27,7 @@ RUN make -j $nproc install
 # configure the libwebp
 ADD cwebp-0.3.1-mtpaint/libwebp-0.3.1.tar.gz /
 WORKDIR /libwebp-0.3.1
-RUN ./configure --host=arm-linux-gnueabi
+RUN ./configure --host=arm-linux-gnueabi --with-jpegincludedir=/usr/local/include --with-jpeglibdir=/usr/local/lib
 
 ENV binary=cwebp
 
